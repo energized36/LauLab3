@@ -21,7 +21,7 @@ class Server {
         let pathname = params.pathname.replace(/\/$/, "");
 
         // getDate
-        if (pathname === STRINGS.BASE_PATH && params.query.name) {
+        if (pathname === `${STRINGS.BASE_PATH}/getDate` && params.query.name) {
             res.writeHead(200, {'Content-Type':'text/html'});
             res.write(mo.date(params.query.name));    
             return res.end();
