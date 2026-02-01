@@ -48,5 +48,4 @@ function (pathname, req, res){
         res.write(data);
         return res.end();
     });
-    fs.close();
 }
