@@ -1,6 +1,7 @@
 let http = require("http");
 let mo = require("./modules/utils");
 let url = require("url");
+let STRINGS = require("./lang/en/en.js")
 
 class Server {
     // Create server constructor
@@ -11,30 +12,32 @@ class Server {
 
     // Start listening on port 8888
     start(){
-        this.server.listen(process.env.PORT || 8000);
+        this.server.listen(process.env.PORT || 8888);
     }
 
     // Returns a greeting string with name and date
-    handleRequest(req, res) {
+    async handleRequest(req, res) {
         let params = url.parse(req.url, true);
-        let pathname = params.pathname;
+        let pathname = params.pathname.replace(/\/$/, "");
 
         // getDate
-        if (params.query.name) {
+        if (pathname === STRINGS.BASE_PATH && params.query.name) {
             res.writeHead(200, {'Content-Type':'text/html'});
             res.write(mo.date(params.query.name));    
             return res.end();
         }
 
+        // readFile
+        else if (pathname.startsWith(`${STRINGS.BASE_PATH}/readFile`)) {
+            return mo.readFile(pathname, STRINGS.BASE_PATH, req, res);
+        }
+
         // writeFile
-        else if (params.query.text){
-            return mo.writeFile(params.query.text, req, res);
+        else if (pathname === `${STRINGS.BASE_PATH}/writeFile` && params.query.text){
+            await mo.writeFile(params.query.text, req, res);
+            return;
         }
         
-        // readFile
-        else if (pathname.startsWith("/readFile")) {
-            return mo.readFile(pathname, req, res);
-        }
         res.end();
     }
 }

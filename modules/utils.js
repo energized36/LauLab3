@@ -19,23 +19,10 @@ function (name){
             </html>`
 }
 
-// Function to write text to a file
-exports.writeFile =
-async function (text, req, res){
-    let fileHandle = await fsPromises.open("file.txt", "a");
-    fileHandle.write(text);
-    if (fileHandle){
-        await fileHandle.close();
-    }
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write(`${STRINGS.SUCCESS}`);
-    return res.end();
-}
-
 // Function to read text from a file
 exports.readFile =
-function (pathname, req, res){
-    const fileName = pathname.substring(10);
+function (pathname, BASE_PATH, req, res){
+    const fileName = pathname.replace(`${BASE_PATH}/readFile/`, "");
 
     fs.readFile(fileName, function (err, data) {
         // Handle file not found or empty filename
@@ -48,4 +35,11 @@ function (pathname, req, res){
         res.write(data);
         return res.end();
     });
+}
+
+// Function to write text to a file
+exports.writeFile = async function (text, req, res){
+    await fsPromises.appendFile("file.txt", text);
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(STRINGS.SUCCESS);
 }
