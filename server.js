@@ -11,7 +11,7 @@ class Server {
 
     // Start listening on port 8888
     start(){
-        this.server.listen(getenv.PORT);
+        this.server.listen(process.env.PORT || 3000);
     }
 
     // Returns a greeting string with name and date
