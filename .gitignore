@@ -2,3 +2,4 @@ app.js
 modules/math.js
 static/
 .env
+file.txt
