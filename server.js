@@ -34,7 +34,7 @@ class Server {
 
         // writeFile
         else if (pathname === `${STRINGS.BASE_PATH}/writeFile` && params.query.text){
-            await mo.writeFile(decodeURIComponent(params.query.text), req, res);
+            await mo.writeFile(params.query.text, req, res);
             return;
         }
         

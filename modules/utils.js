@@ -22,8 +22,7 @@ function (name){
 // Function to read text from a file
 exports.readFile =
 function (pathname, BASE_PATH, req, res){
-    const encodedFileName = pathname.replace(`${BASE_PATH}/readFile/`, "");
-    const fileName = decodeURIComponent(encodedFileName);
+    const fileName = pathname.replace(`${BASE_PATH}/readFile/`, "");
 
     fs.readFile(fileName, function (err, data) {
         if (err || !fileName || fileName.trim() === "") {
@@ -40,7 +39,7 @@ function (pathname, BASE_PATH, req, res){
 
 // Function to write text to a file
 exports.writeFile = async function (text, req, res) {
-    const decodedText = decodeURIComponent(text);
+    const decodedText = encodeURIComponent(text);
     await fsPromises.appendFile("file.txt", decodedText);
 
     res.writeHead(200, { "Content-Type": "text/html" });
