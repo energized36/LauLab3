@@ -32,7 +32,7 @@ function (pathname, BASE_PATH, req, res){
         }
         // File found, send content
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.write(data);
+        res.write(encodeURIComponent(data));
         return res.end();
     });
 }
