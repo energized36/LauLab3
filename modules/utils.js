@@ -39,12 +39,11 @@ function (pathname, BASE_PATH, req, res){
 
 
 // Function to write text to a file
-exports.writeFile = async function (pathname, BASE_PATH, req, res) {
-    const encodedText = pathname.replace(`${BASE_PATH}/writeFile/`, "");
-    const decodedText = decodeURIComponent(encodedText);
-
+exports.writeFile = async function (text, req, res) {
+    const decodedText = decodeURIComponent(text);
     await fsPromises.appendFile("file.txt", decodedText);
 
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(STRINGS.SUCCESS);
 };
+
