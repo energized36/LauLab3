@@ -22,7 +22,8 @@ function (name){
 // Function to read text from a file
 exports.readFile =
 function (pathname, BASE_PATH, req, res){
-    const fileName = pathname.replace(`${BASE_PATH}/readFile/`, "");
+    const encodedFileName = pathname.replace(`${BASE_PATH}/readFile/`, "");
+    const fileName = decodeURIComponent(encodedFileName);
 
     fs.readFile(fileName, function (err, data) {
         // Handle file not found or empty filename
@@ -32,14 +33,17 @@ function (pathname, BASE_PATH, req, res){
         }
         // File found, send content
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.write(encodeURIComponent(data));
         return res.end();
     });
 }
 
 // Function to write text to a file
-exports.writeFile = async function (text, req, res){
-    await fsPromises.appendFile("file.txt", encodeURIComponent(text));
+exports.writeFile = async function (pathname, BASE_PATH, req, res) {
+    const encodedText = pathname.replace(`${BASE_PATH}/writeFile/`, "");
+    const decodedText = decodeURIComponent(encodedText);
+
+    await fsPromises.appendFile("file.txt", decodedText);
+
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(STRINGS.SUCCESS);
-}
+};
