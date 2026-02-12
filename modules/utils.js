@@ -26,16 +26,17 @@ function (pathname, BASE_PATH, req, res){
     const fileName = decodeURIComponent(encodedFileName);
 
     fs.readFile(fileName, function (err, data) {
-        // Handle file not found or empty filename
-        if (err || fileName && fileName.trim() === "") {
+        if (err || !fileName || fileName.trim() === "") {
             res.writeHead(404, { 'Content-Type': 'text/html' });
             return res.end(fileName + " " + STRINGS.ERROR);
         }
-        // File found, send content
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        return res.end();
+        // Convert buffer to string
+        const fileContent = data.toString();
+        return res.end(fileContent);
     });
 }
+
 
 // Function to write text to a file
 exports.writeFile = async function (pathname, BASE_PATH, req, res) {
